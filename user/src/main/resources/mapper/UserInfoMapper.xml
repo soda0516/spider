@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="soda.module.user.mapper.UserInfoMapper">
+    <resultMap id="BaseResultMap" type="soda.module.user.entity.UserInfo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="role_id" jdbcType="INTEGER" property="roleId" />
+        <association property="userRole" javaType="soda.module.user.entity.UserRole" columnPrefix="role_">
+            <id column="role_id" jdbcType="INTEGER" property="id" />
+            <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+            <result column="role_note" jdbcType="VARCHAR" property="roleNote" />
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        user_info.id as id, user_info.password as password, user_info.username as username, user_info.role_id as role_id
+    </sql>
+    <select id="selectUserInfoWithUserRole" resultMap="BaseResultMap">
+        select user_info.id,user_info.password,user_info.username,user_info.role_id,user_role.id as role_role_id,user_role.role_name as role_role_name,user_role.role_note as role_role_note
+        from user_info LEFT JOIN user_role ON user_info.role_id = user_role.id order by user_info.id
+    </select>
+    <select id="selectUserInfoWithUserRoleById" resultMap="BaseResultMap">
+        select user_info.id,user_info.password,user_info.username,user_info.role_id,user_role.id as role_role_id,user_role.role_name as role_role_name,user_role.role_note as role_role_note
+        from user_info LEFT JOIN user_role ON user_info.role_id = user_role.id where user_info.id = #{id}
+    </select>
+</mapper>
